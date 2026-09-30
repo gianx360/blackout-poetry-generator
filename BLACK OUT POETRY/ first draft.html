@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blackout Poetry Generator</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    textarea {
+      width: 100%;
+      height: 220px;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    button, select {
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    #output {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      line-height: 2;
+      font-size: 24px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      word-wrap: break-word;
+    }
+
+    .hidden {
+      background: black;
+      color: black;
+      padding: 2px 4px;
+      border-radius: 2px;
+      user-select: none;
+    }
+
+    .visible {
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Blackout Poetry Generator</h1>
+
+  <textarea id="inputText"
+    placeholder="Paste text here..."></textarea>
+
+  <div class="controls">
+
+    <select id="mode">
+      <option value="0.05">Sparse Mode (5%)</option>
+      <option value="0.15">Poetry Mode (15%)</option>
+      <option value="0.50">Chaos Mode (50%)</option>
+    </select>
+
+    <button onclick="generateBlackout()">
+      Generate
+    </button>
+
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+
+    function generateBlackout() {
+
+      const text =
+        document.getElementById("inputText").value;
+
+      const revealRate =
+        parseFloat(document.getElementById("mode").value);
+
+      const words = text.split(/(\s+)/);
+
+      let result = "";
+
+      words.forEach(word => {
+
+        // preserve spaces/newlines
+        if (word.trim() === "") {
+          result += word;
+          return;
+        }
+
+        const showWord =
+          Math.random() < revealRate;
+
+        if (showWord) {
+          result += `<span class="visible">${word}</span>`;
+        } else {
+          result += `<span class="hidden">${word}</span>`;
+        }
+
+      });
+
+      document.getElementById("output").innerHTML =
+        result;
+    }
+
+  </script>
+
+</body>
+</html>
